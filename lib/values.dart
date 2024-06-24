@@ -66,7 +66,7 @@ final List<Video> videos = [
     timestamp: DateTime(2021, 2, 26),
     viewCount: '8K',
     likes: '485',
-    dislikes: '8', videoUrl: '',
+    dislikes: '8', videoUrl: 'https://www.taxmann.com/emailer/images/FEMA.mp4',
   ),
   Video(
     id: 'ilX5hnH8XoI',
@@ -77,7 +77,7 @@ final List<Video> videos = [
     timestamp: DateTime(2020, 7, 12),
     viewCount: '18K',
     likes: '1k',
-    dislikes: '4', videoUrl: '',
+    dislikes: '4', videoUrl: 'https://www.taxmann.com/emailer/images/IBC.mp4',
   ),
 ];
 
