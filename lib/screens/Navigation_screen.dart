@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:youtube_clone_app/screens/home_screen.dart';
+import 'package:youtube_clone_app/screens/video_screen.dart';
 import 'package:youtube_clone_app/values.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:timeago/timeago.dart';
 
 final selectedVideoProvider = StateProvider<Video?>(
-    (ref) => null); // this is the key to managing the state of the spp
+    (ref) => null); // this is the key to managing the state of the app and helps to select the video
+
+final miniPlayerControllerProvider = StateProvider.autoDispose<MiniplayerController>((ref) => MiniplayerController());
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
@@ -32,8 +36,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
       body: Consumer(
         builder: (context, watch, _) {
           final selectedVideo = watch(selectedVideoProvider).state;
+          final MiniplayerController = watch(miniPlayerControllerProvider).state;
           return Stack(
-            // this is mainly used to help create a list of
+            // this is mainly used to help create a list of videos
             children: screens
                 .asMap()
                 .map(
@@ -49,15 +54,17 @@ class _NavigationScreenState extends State<NavigationScreen> {
                 .toList()
               ..add(
                 Offstage(
-                  // responisble for the miniplayer to drag
+                  // responisble for the miniplayer to draggable
                   offstage: selectedVideo == null,
                   child: Miniplayer(
+                    controller: MiniplayerController,
                     maxHeight: MediaQuery.of(context).size.height,
                     minHeight: _playerMinHeight,
                     builder: (double height, double percentage) {
                       if (selectedVideo == null) {
                         return SizedBox.shrink();
                       }
+                      if (height <= _playerMinHeight + 50)
                       return Container(
                           color: Colors.black,
                           child: Column(
@@ -70,6 +77,52 @@ class _NavigationScreenState extends State<NavigationScreen> {
                                     width: 120.0,
                                     fit: BoxFit.cover,
                                   ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Flexible(
+                                            child: Text(
+                                              selectedVideo.title,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall!
+                                                  .copyWith(fontWeight: FontWeight.w500,color: Colors.white),
+                                            ),
+                                          ),
+                                          Flexible(
+                                            child: Text(
+                                              selectedVideo.author.username,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall!
+                                                  .copyWith(fontSize: 14),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(Icons.play_arrow),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      context.read(selectedVideoProvider).state = null;
+                                    },
+                                    icon: Icon(Icons.close),
+                                  ),
                                 ],
                               ),
                               LinearProgressIndicator(
@@ -79,6 +132,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                               ),
                             ],
                           ));
+                          return VideoScreen();
                     },
                   ),
                 ),

@@ -27,8 +27,10 @@ class Video {
   final String viewCount;
   final String likes;
   final String dislikes;
+  final String videoUrl;
 
   const Video({
+    required this.videoUrl,
     required this.id,
     required this.author,
     required this.title,
@@ -45,13 +47,14 @@ final List<Video> videos = [
   Video(
     id: 'x606y4QWrxo',
     author: currentUser,
-    title: 'Flutter Clubhouse Clone UI Tutorial | Apps From Scratch',
-    thumbnailUrl: 'https://i.ytimg.com/vi/x606y4QWrxo/0.jpg',
+    title: 'Big Buck Bunny',
+    thumbnailUrl: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg',
     duration: '8:20',
     timestamp: DateTime(2021, 3, 20),
     viewCount: '10K',
     likes: '958',
-    dislikes: '4',
+    dislikes: '4', videoUrl: 'https://www.taxmann.com/emailer/images/CompaniesAct.mp4',
+
   ),
   Video(
     author: currentUser,
@@ -63,7 +66,7 @@ final List<Video> videos = [
     timestamp: DateTime(2021, 2, 26),
     viewCount: '8K',
     likes: '485',
-    dislikes: '8',
+    dislikes: '8', videoUrl: '',
   ),
   Video(
     id: 'ilX5hnH8XoI',
@@ -74,7 +77,7 @@ final List<Video> videos = [
     timestamp: DateTime(2020, 7, 12),
     viewCount: '18K',
     likes: '1k',
-    dislikes: '4',
+    dislikes: '4', videoUrl: '',
   ),
 ];
 
@@ -88,7 +91,7 @@ final List<Video> suggestedVideos = [
     timestamp: DateTime(2020, 8, 22),
     viewCount: '32K',
     likes: '1.9k',
-    dislikes: '7',
+    dislikes: '7', videoUrl: '',
   ),
   Video(
     id: 'HvLb5gdUfDE',
@@ -99,7 +102,7 @@ final List<Video> suggestedVideos = [
     timestamp: DateTime(2020, 8, 7),
     viewCount: '190K',
     likes: '9.3K',
-    dislikes: '45',
+    dislikes: '45', videoUrl: '',
   ),
   Video(
     id: 'h-igXZCCrrc',
@@ -110,6 +113,6 @@ final List<Video> suggestedVideos = [
     timestamp: DateTime(2019, 10, 17),
     viewCount: '358K',
     likes: '20k',
-    dislikes: '85',
+    dislikes: '85', videoUrl: '',
   ),
 ];
