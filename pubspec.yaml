@@ -40,6 +40,9 @@ dependencies:
   miniplayer: ^1.0.1
   video_player: ^2.8.5
   flutter_windowmanager: ^0.2.0
+  get_it: ^7.6.7
+  supabase_flutter: ^2.0.0
+  delightful_toast: ^1.1.0
 
 dev_dependencies:
   flutter_test:
