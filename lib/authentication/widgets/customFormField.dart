@@ -14,6 +14,7 @@ class CustomFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: height,
+      width: double.infinity,
       child: TextFormField(
         onSaved: onSaved,
         obscureText: obscureText,
@@ -24,7 +25,16 @@ class CustomFormField extends StatelessWidget {
           return 'Enter a valid ${hintText.toLowerCase()}';
         },
         decoration: InputDecoration(
-          border: OutlineInputBorder(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15)
+          ),
+          
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.red
+            ),
+            borderRadius: BorderRadius.circular(15)
+          ),
           hintText: hintText,
         ),
       ),

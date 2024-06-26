@@ -37,6 +37,7 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       resizeToAvoidBottomInset: false,
       body: buildUI(),
     );
@@ -64,13 +65,20 @@ class _SignupPageState extends State<SignupPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Let's get going!",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+          SizedBox(
+            height: 20,
           ),
-          Text(
-            "Register an account using the form below",
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+          Center(
+            child: Text(
+              "Let's get going!",
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.w800,color: const Color.fromARGB(255, 255, 0, 0)),
+            ),
+          ),
+          Center(
+            child: Text(
+              "Create a new account by filling the given details",
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
+            ),
           ),
         ],
       ),
@@ -91,6 +99,9 @@ class _SignupPageState extends State<SignupPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             PrflPicSelectionField(),
+            SizedBox(
+              height: 20,
+            ),
             CustomFormField(
               hintText: 'Enter your Name',
               height: MediaQuery.of(context).size.height * 0.1,
@@ -144,8 +155,13 @@ class _SignupPageState extends State<SignupPage> {
   Widget RegisterButton() {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      child: MaterialButton(
-        color: Theme.of(context).colorScheme.primary,
+      child: TextButton(
+        style: TextButton.styleFrom(
+          backgroundColor: const Color.fromARGB(255, 255, 0, 0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15)
+          )
+        ),
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
             _formKey.currentState!.save(); // Save the form fields
@@ -171,7 +187,7 @@ class _SignupPageState extends State<SignupPage> {
           }
         },
         child: Text(
-          'Register',
+          'Sign up',
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -202,11 +218,11 @@ class _SignupPageState extends State<SignupPage> {
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text("Already have an account?"),
+          Text("Already have an account?  "),
           GestureDetector(
             child: Text(
               'Login',
-              style: TextStyle(fontWeight: FontWeight.w800),
+              style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
             ),
             onTap: () {
               _navigationService.goBack();
