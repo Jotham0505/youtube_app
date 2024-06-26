@@ -1,9 +1,11 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:youtube_clone_app/authentication/screens/login_page.dart';
 import 'package:youtube_clone_app/authentication/screens/signup_page.dart';
 import 'package:youtube_clone_app/screens/Navigation_screen.dart';
 import 'package:youtube_clone_app/screens/home_screen.dart';
+import 'package:youtube_clone_app/screens/video_screen.dart';
 
 
 class NavigationService {
@@ -13,7 +15,8 @@ class NavigationService {
   final Map<String,Widget Function(BuildContext)> _routes = {
     "/login" : (context) => LoginPage(),
     "/signup" : (context) => SignupPage(),
-    "/Home" : (context) => HomeScreen()
+    "/Home" : (context) => HomeScreen(),
+    "/Video" : (context) => VideoScreen(),
   };
 
   GlobalKey<NavigatorState> ? get navigatorkey{

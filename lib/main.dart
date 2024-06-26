@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         bottomNavigationBarTheme: BottomNavigationBarThemeData(selectedItemColor: Colors.white),
       ),
       navigatorKey: _navigationService.navigatorkey,
-      initialRoute: _authService.user != null ? "/Home" : "/login",
+      initialRoute: _authService.user != null ? "/login" : "/login",
       routes: _navigationService.routes,
     );
   }

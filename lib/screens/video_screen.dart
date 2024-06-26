@@ -10,38 +10,41 @@ import 'package:youtube_clone_app/widgets/video_info.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoScreen extends StatefulWidget {
-  const VideoScreen({super.key});
+  const VideoScreen({Key? key}) : super(key: key);
 
   @override
   State<VideoScreen> createState() => _VideoScreenState();
 }
 
 class _VideoScreenState extends State<VideoScreen> {
-  ScrollController? _scrollController;
-  VideoPlayerController? _videoPlayerController;
+  late VideoPlayerController _videoPlayerController;
+  double _progress = 0.0;
+  Duration _position = Duration.zero;
+  Duration _duration = Duration.zero;
+  bool _isPlaying = false;
+  bool _isFullScreen = false;
+  String _timeStamp = '';
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
+    _initializeVideoPlayer(context);
   }
 
   @override
   void dispose() {
-    _scrollController?.dispose();
-    _videoPlayerController?.dispose();
+    _videoPlayerController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: _togglePlayPause,
       child: Scaffold(
         body: Container(
           color: Theme.of(context).scaffoldBackgroundColor,
           child: CustomScrollView(
-            controller: _scrollController,
             slivers: [
               SliverToBoxAdapter(
                 child: Consumer(
@@ -52,17 +55,19 @@ class _VideoScreenState extends State<VideoScreen> {
                         children: [
                           Stack(
                             children: [
-                              selectedVideo != null
-                                  ? AspectRatio(
-                                      aspectRatio: 16 / 9,
-                                      child: VideoPlayerWidget(url: selectedVideo.videoUrl),
-                                    )
-                                  : Container(),
+                              if (selectedVideo != null)
+                                AspectRatio(
+                                  aspectRatio: 16 / 9,
+                                  child: VideoPlayerWidget(url: selectedVideo.videoUrl),
+                                ),
                               IconButton(
-                                onPressed: () => context
-                                    .read(miniPlayerControllerProvider)
-                                    .state
-                                    .animateToHeight(state: PanelState.MIN),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  context
+                                      .read(miniPlayerControllerProvider)
+                                      .state
+                                      .animateToHeight(state: PanelState.MIN);
+                                },
                                 icon: Icon(Icons.keyboard_arrow_down),
                                 iconSize: 30,
                               ),
@@ -81,12 +86,9 @@ class _VideoScreenState extends State<VideoScreen> {
                     final video = suggestedVideos[index];
                     return VideoCards(
                       video: video,
-                      hasPadding: true,
-                      onTap: () => _scrollController!.animateTo(
-                        0,
-                        duration: Duration(milliseconds: 200),
-                        curve: Curves.easeIn,
-                      ),
+                      onTap: () {
+                        context.read(selectedVideoProvider).state = video;
+                      },
                     );
                   },
                   childCount: suggestedVideos.length,
@@ -99,30 +101,53 @@ class _VideoScreenState extends State<VideoScreen> {
     );
   }
 
-  void _initializeVideoPlayer(String vidUrl) {
-  _videoPlayerController?.dispose();
-  _videoPlayerController = VideoPlayerController.network(vidUrl)
-    ..initialize().then((_) {
-      setState(() {});
-      _videoPlayerController!.play();
+  void _initializeVideoPlayer(BuildContext context) {
+    final selectedVideo = context.read(selectedVideoProvider).state;
+    if (selectedVideo != null) {
+      _videoPlayerController = VideoPlayerController.network(selectedVideo.videoUrl)
+        ..initialize().then((_) {
+          setState(() {
+            _duration = _videoPlayerController.value.duration;
+            _position = _videoPlayerController.value.position;
+            _timeStamp = _formatDuration(_position);
+          });
+          _videoPlayerController.play();
+          _isPlaying = true;
+          _videoPlayerController.addListener(() {
+            if (mounted) {
+              setState(() {
+                _progress = _videoPlayerController.value.position.inMilliseconds /
+                    _videoPlayerController.value.duration.inMilliseconds;
+                _position = _videoPlayerController.value.position;
+                _timeStamp = _formatDuration(_position);
+              });
+            }
+          });
+        }).catchError((error) {
+          print('Video initialization error: $error');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Failed to load video: $error")),
+          );
+        });
+    }
+  }
 
-      // Set up listener to update progress indicator
-      _videoPlayerController!.addListener(() {
-        if (mounted) {
-          setState(() {});
-        }
-      });
-    }).catchError((error) {
-      print('Video initialization error: $error');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Failed to load video: $error")),
-      );
+  void _togglePlayPause() {
+    setState(() {
+      if (_videoPlayerController.value.isPlaying) {
+        _videoPlayerController.pause();
+        _isPlaying = false;
+      } else {
+        _videoPlayerController.play();
+        _isPlaying = true;
+      }
     });
+  }
+
+  String _formatDuration(Duration duration) {
+    return duration.toString().split('.').first.padLeft(8, "0");
+  }
 }
-
-}
-
-
 
 class VideoPlayerWidget extends StatefulWidget {
   final String url;
@@ -362,6 +387,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     super.dispose();
   }
 }
+
 
 
 

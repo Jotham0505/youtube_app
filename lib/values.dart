@@ -91,7 +91,7 @@ final List<Video> suggestedVideos = [
     timestamp: DateTime(2020, 8, 22),
     viewCount: '32K',
     likes: '1.9k',
-    dislikes: '7', videoUrl: '',
+    dislikes: '7', videoUrl: 'https://www.taxmann.com/emailer/images/Incometax.mp4',
   ),
   Video(
     id: 'HvLb5gdUfDE',
@@ -102,7 +102,7 @@ final List<Video> suggestedVideos = [
     timestamp: DateTime(2020, 8, 7),
     viewCount: '190K',
     likes: '9.3K',
-    dislikes: '45', videoUrl: '',
+    dislikes: '45', videoUrl: 'https://www.taxmann.com/emailer/images/Incometax.mp4',
   ),
   Video(
     id: 'h-igXZCCrrc',
@@ -113,6 +113,6 @@ final List<Video> suggestedVideos = [
     timestamp: DateTime(2019, 10, 17),
     viewCount: '358K',
     likes: '20k',
-    dislikes: '85', videoUrl: '',
+    dislikes: '85', videoUrl: 'https://www.taxmann.com/emailer/images/Incometax.mp4',
   ),
 ];

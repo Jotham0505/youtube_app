@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:youtube_clone_app/screens/Navigation_screen.dart';
+import 'package:youtube_clone_app/screens/video_screen.dart';
 import 'package:youtube_clone_app/values.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:youtube_clone_app/authentication/services/navigation_service.dart';
 
 class VideoCards extends StatelessWidget {
+  final GetIt _getIt = GetIt.instance;
   final VoidCallback ? onTap;
   final bool hasPadding;
   final Video video;
-  const VideoCards({super.key, required this.video,  this.hasPadding = false, this.onTap});
+   VideoCards({super.key, required this.video,  this.hasPadding = false, this.onTap});
 
   @override
   Widget build(BuildContext context) {
+    final NavigationService _navigationService = _getIt.get<NavigationService>();
     return GestureDetector(
       onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => VideoScreen()),
+        );
         context.read(selectedVideoProvider).state = video;
         context.read(miniPlayerControllerProvider).state.animateToHeight(state: PanelState.MAX);
         if(onTap != null) onTap!();
@@ -56,6 +65,7 @@ class VideoCards extends StatelessWidget {
               children: [
                 GestureDetector(
                   child: CircleAvatar(
+                    backgroundColor: Colors.black,
                     foregroundImage: NetworkImage(video.author.profileImageUrl),
                   ),
                   onTap: () => print('Navigate To profile')
