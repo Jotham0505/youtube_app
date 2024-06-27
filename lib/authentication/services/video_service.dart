@@ -20,11 +20,18 @@ class VideoService {
       final response = await _supabaseClient.storage
           .from('videos')
           .upload(filePath, video);
-        return filePath;
+          if (response != null) {
+            final String videoUrl = _supabaseClient.storage.from('videos').getPublicUrl(filePath);
+            return videoUrl;
+          }else{
+            print('Upload failed: Respomse does not contain key file');
+            return null;
+          }
     } catch (e) {
       print('Error uploading video: $e');
+      return null;
     }
-    return null;
+    
   }
 }
 

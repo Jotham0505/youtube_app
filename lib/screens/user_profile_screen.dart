@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:youtube_clone_app/authentication/consts.dart';
+import 'package:youtube_clone_app/authentication/screens/login_page.dart';
 import 'package:youtube_clone_app/authentication/services/video_service.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -75,17 +76,9 @@ class ProfileScreen extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async{
-                 File? video = await _videoService.pickVideoFromGallery();
-                  if (video != null) {
-                    String? filePath = await _videoService.uploadVideo(video);
-                    if (filePath != null) {
-                      print('Video uploaded to: $filePath');
-                    } else {
-                      print('Failed to upload video');
-                    }
-                  }
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage(),));
               },
-              child: Text('Upload Video'),
+              child: Text('Log out'),
               style: ElevatedButton.styleFrom(
                 primary: Colors.red
               ),

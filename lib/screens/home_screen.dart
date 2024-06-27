@@ -5,6 +5,8 @@ import 'package:get_it/get_it.dart';
 import 'package:youtube_clone_app/authentication/consts.dart';
 import 'package:youtube_clone_app/authentication/services/auth_service.dart';
 import 'package:youtube_clone_app/authentication/services/video_service.dart';
+import 'package:youtube_clone_app/screens/Upload_video_screen.dart';
+import 'package:youtube_clone_app/screens/explore_screen.dart';
 import 'package:youtube_clone_app/screens/user_profile_screen.dart';
 import 'package:youtube_clone_app/values.dart';
 import 'package:youtube_clone_app/widgets/Video_card.dart';
@@ -22,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late AuthService _authService;
   int _currentIndex = 0;
   late VideoService _videoService;
+  List<String> _uploadedvideos = [];
 
   @override
   void initState() {
@@ -61,8 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     ),
-    Scaffold(body: Center(child: Text("Explore"))),
-    Scaffold(body: Center(child: Text("Add"))),
+    Scaffold(body: Center(child: Text('explore'),),),
+    UploadScreen(),
     Scaffold(body: Center(child: Text("Subscriptions"))),
     ProfileScreen(),
   ];
@@ -77,7 +80,8 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedFontSize: 10,
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
-        onTap: (index) {
+        onTap: (index) async{
+        
           setState(() {
             _currentIndex = index;
           });
