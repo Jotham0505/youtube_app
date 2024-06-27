@@ -71,7 +71,7 @@ class _VideoScreenState extends State<VideoScreen> {
                                 },
                                 icon: Icon(Icons.keyboard_arrow_down),
                                 iconSize: 30,
-                                color: Colors.grey,
+                                color: Colors.white,
                               ),
                             ],
                           ),
@@ -244,15 +244,15 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               ),
               
               Positioned(
-                top: 60.0,
-                right: 85,
+                top: 69.0,
+                right: 90,
                 child: Row(
                   children: [
                     Visibility(
                       visible: !_isPlaying,
                       child: IconButton(
                         icon: Icon(Icons.replay_10),
-                        color: Colors.grey,
+                        color: Colors.white,
                         onPressed: _rewind10Seconds,
                       ),
                     ),
@@ -261,7 +261,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                 child: Center(
                   child: IconButton(
                     icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
-                    color: Colors.grey,
+                    color: Colors.white,
                     iconSize: 64,
                     onPressed: _togglePlayPause,
                   ),
@@ -271,7 +271,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                       visible: !_isPlaying,
                       child: IconButton(
                         icon: Icon(Icons.forward_10),
-                        color: Colors.grey,
+                        color: Colors.white,
                         onPressed: _forward10Seconds,
                       ),
                     ),
@@ -284,7 +284,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                 child: Text(
                   _timeStamp,
                   style: TextStyle(
-                    color: Colors.grey,
+                    color: Colors.white,
                     fontSize: 16.0,
                   ),
                 ),

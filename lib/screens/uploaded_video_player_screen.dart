@@ -35,19 +35,7 @@ class _VideoPlayerScreenState extends State<uploaded_video_player_screen> {
     super.dispose();
   }
 
-  void _toggleFullScreen() {
-    setState(() {
-      _isFullScreen = !_isFullScreen;
-    });
 
-    if (_isFullScreen) {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-      SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
-    } else {
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +62,6 @@ class _VideoPlayerScreenState extends State<uploaded_video_player_screen> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return GestureDetector(
-                    onDoubleTap: _toggleFullScreen,
                     child: AspectRatio(
                       aspectRatio: _isFullScreen ? _controller.value.aspectRatio : 16 / 9,
                       child: VideoPlayer(_controller),
@@ -99,7 +86,7 @@ class _VideoPlayerScreenState extends State<uploaded_video_player_screen> {
                 _controller,
                 allowScrubbing: true,
                 colors: VideoProgressColors(
-                  playedColor: Colors.blue, // Customize played color if needed
+                  playedColor: Colors.red, // Customize played color if needed
                   bufferedColor: Colors.white.withOpacity(0.5), // Customize buffered color if needed
                   backgroundColor: Colors.grey, // Customize background color if needed
                 ),
@@ -141,10 +128,7 @@ class _VideoPlayerScreenState extends State<uploaded_video_player_screen> {
                     });
                   },
                 ),
-                IconButton(
-                  icon: Icon(_isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen),
-                  onPressed: _toggleFullScreen,
-                ),
+                
               ],
             ),
             SizedBox(height: 10),

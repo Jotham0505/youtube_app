@@ -40,45 +40,54 @@ class AuthService {
 }
 
   Future<bool> signUp(String email, String password, String name, File? selectedImage) async {
-    try {
-      final response = await _supabaseClient.auth.signUp(email: email, password: password);
-      if (response.user == null) {
-        _error = 'Error signing up: No user returned';
-        print(_error);
-        return false;
-      }
-
-      // Inform the user to check their email for verification
-     
-
-      // Upload the selected image if it exists
-      if (selectedImage != null) {
-        final path = 'public/profiles/${response.user!.id}/profile.png';
-        await _supabaseClient.storage.from('avatars').upload(path, selectedImage);
-      }
-
-      if (response.user!.emailConfirmedAt == null) {
-          print('Please confirm your email before logging in.');
-          return false;
-        }
-
-      // Additional user data can be updated after sign-up if needed
-      await _supabaseClient.from('users').upsert([
-        {
-          'id': response.user!.id,
-          'name': name,
-          // Add more fields as necessary
-        }
-      ]);
-
-      _user = response.user;
-      return true;
-    } catch (e) {
-      _error = 'Error signing up: $e';
+  try {
+    // Step 1: Sign up the user with email and password
+    final response = await _supabaseClient.auth.signUp(email: email, password: password);
+    if (response.user == null) {
+      _error = 'Error signing up: No user returned';
       print(_error);
       return false;
     }
+
+    // Step 2: Upload the selected image if it exists
+    if (selectedImage != null) {
+      final path = 'public/profiles/${response.user!.id}/profile.png';
+      await _supabaseClient.storage.from('avatars').upload(path, selectedImage);
+    }
+
+    // Step 3: Ensure email is confirmed before proceeding
+    if (response.user!.emailConfirmedAt == null) {
+      print('Please confirm your email before logging in.');
+      return false;
+    }
+
+    // Step 4: Upsert additional user data including name
+    await _supabaseClient.from('users').upsert([
+      {
+        'id': response.user!.id,
+        'name': name,
+        // Add more fields as necessary
+      }
+    ]);
+
+    // Step 5: Update profile table with name and image URL
+    await _supabaseClient.from('profiles').upsert([
+      {
+        'user_id': response.user!.id,
+        'name': name,
+        'profile_image_url': 'URL to your uploaded image', // Replace with actual URL or logic to retrieve URL
+      }
+    ]);
+
+    _user = response.user;
+    return true;
+  } catch (e) {
+    _error = 'Error signing up: $e';
+    print(_error);
+    return false;
   }
+}
+
   Future<bool> logout() async {
     try {
       await _supabaseClient.auth.signOut();

@@ -1,9 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:youtube_clone_app/authentication/consts.dart';
 import 'package:youtube_clone_app/authentication/screens/login_page.dart';
 import 'package:youtube_clone_app/screens/home_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final SupabaseClient _supabaseClient = Supabase.instance.client;
+  String _userName = '';
+  String _profileImageUrl = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchUserProfile();
+  }
+  
+
+  Future<void> fetchUserProfile() async {
+  try {
+    final user = _supabaseClient.auth.currentUser;
+    if (user == null) {
+      // Handle case where user is not logged in
+      return;
+    }
+
+    final response = await _supabaseClient
+        .from('profiles')
+        .select('name, profile_image_url')
+        .eq('user_id', user.id)
+        .single()
+        .execute();
+
+    if (response.status == 200) {
+      final userProfile = response.data;
+      if (userProfile != null) {
+        setState(() {
+          _userName = userProfile['name'] as String? ?? '';
+          _profileImageUrl = userProfile['profile_image_url'] as String? ?? '';
+        });
+      } else {
+        print('No user profile data found');
+      }
+    } else {
+      print('Error fetching user profile:');
+    }
+  } catch (e) {
+    print('Error fetching the user profile: $e');
+  }
+}
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,11 +82,11 @@ class ProfileScreen extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 50,
-              backgroundImage: NetworkImage(PLACEHOLDER_PFP),
+              backgroundImage: _profileImageUrl.isNotEmpty ? NetworkImage(_profileImageUrl) as ImageProvider : AssetImage('assets/placeholder.png'),
             ),
             SizedBox(height: 16),
             Text(
-              'David Robinson',
+              'Jotham Emmanuel Cheeran',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -68,7 +122,11 @@ class ProfileScreen extends StatelessWidget {
               height: 50,
             ),
             ElevatedButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage())),
+               onPressed: () async {
+                // Handle sign out
+                await _supabaseClient.auth.signOut();
+                Navigator.pushReplacementNamed(context, '/login'); // Navigate to login screen
+              },
               style: ElevatedButton.styleFrom(
                 primary: Color.fromARGB(255, 255, 0, 0),
                 padding: EdgeInsets.symmetric(horizontal: 60, vertical: 18),
@@ -88,8 +146,7 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: ProfileScreen(),
-  ));
+class _execute {
 }
+
+

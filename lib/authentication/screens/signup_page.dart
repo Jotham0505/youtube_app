@@ -47,14 +47,12 @@ class _SignupPageState extends State<SignupPage> {
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-        child: Expanded(
-          child: Column(
-            children: [
-              headertext(),
-              RegisterForm(),
-              LoginAccountLink(),
-            ],
-          ),
+        child: Column(
+          children: [
+            headertext(),
+            RegisterForm(),
+            LoginAccountLink(),
+          ],
         ),
       ),
     );
