@@ -1,4 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:youtube_clone_app/authentication/consts.dart';
+import 'package:youtube_clone_app/authentication/services/auth_service.dart';
+import 'package:youtube_clone_app/authentication/services/video_service.dart';
+import 'package:youtube_clone_app/screens/user_profile_screen.dart';
 import 'package:youtube_clone_app/values.dart';
 import 'package:youtube_clone_app/widgets/Video_card.dart';
 import 'package:youtube_clone_app/widgets/main_HomePage_Appbar.dart';
@@ -11,7 +18,28 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final GetIt _getIt = GetIt.instance;
+  late AuthService _authService;
   int _currentIndex = 0;
+  late VideoService _videoService;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _authService = _getIt.get<AuthService>();
+    _videoService = _getIt.get<VideoService>();
+  }
+
+  Future<void> _logout() async {
+    bool success = await _authService.logout();
+    if (success) {
+      Navigator.pushReplacementNamed(context, '/login');
+    } else {
+      // Handle logout failure
+      print('Error logging out');
+    }
+  }
 
   final screens = [
     Scaffold(
@@ -36,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Scaffold(body: Center(child: Text("Explore"))),
     Scaffold(body: Center(child: Text("Add"))),
     Scaffold(body: Center(child: Text("Subscriptions"))),
-    Scaffold(body: Center(child: Text("Library"))),
+    ProfileScreen(),
   ];
 
   @override

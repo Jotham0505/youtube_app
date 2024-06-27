@@ -4,6 +4,8 @@ import 'package:youtube_clone_app/authentication/services/alert_service.dart';
 import 'package:youtube_clone_app/authentication/services/auth_service.dart';
 import 'package:youtube_clone_app/authentication/services/media_service.dart';
 import 'package:youtube_clone_app/authentication/services/navigation_service.dart';
+import 'package:youtube_clone_app/authentication/services/video_service.dart';
+import 'package:youtube_clone_app/values.dart';
 
 Future<void> setupSupabse() async{
   await Supabase.initialize(
@@ -18,4 +20,5 @@ Future<void> registerService() async{
   getIt.registerSingleton<NavigationService>(NavigationService());
   getIt.registerSingleton<AlertService>(AlertService());
   getIt.registerSingleton<MediaService>(MediaService());
+  getIt.registerSingleton<VideoService>(VideoService());
 }
