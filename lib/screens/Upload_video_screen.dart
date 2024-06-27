@@ -8,6 +8,8 @@ import 'package:get_it/get_it.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_clone_app/authentication/services/video_service.dart';
 import 'package:youtube_clone_app/screens/uploaded_video_player_screen.dart';
+import 'package:youtube_clone_app/screens/user_profile_screen.dart';
+import 'package:youtube_clone_app/values.dart';
 // Update with the correct import path
 
 class UploadScreen extends StatefulWidget {
@@ -55,6 +57,16 @@ class _UploadScreenState extends State<UploadScreen> {
       appBar: AppBar(
         leading: IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back)),
         title: Text('Upload Video'),
+        actions: [
+           IconButton(onPressed: () {}, icon: Icon(Icons.cast)),
+          IconButton(onPressed: () {}, icon: Icon(Icons.notifications_outlined)),
+          IconButton(
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen())),
+            icon: CircleAvatar(
+              foregroundImage: NetworkImage(currentUser.profileImageUrl),
+            ),
+          ),
+        ],
         backgroundColor: Colors.black,
       ),
       body: Padding(

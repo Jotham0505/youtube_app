@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:youtube_clone_app/screens/user_profile_screen.dart';
 import 'package:youtube_clone_app/values.dart';
 import 'package:youtube_clone_app/authentication/services/navigation_service.dart';
 
@@ -20,9 +21,7 @@ class MainHomePageAppbar extends StatelessWidget {
         IconButton(onPressed: (){}, icon: Icon(Icons.search)),
         IconButton(
           iconSize: 40,
-          onPressed: () {
-            _navigationService.pushReplacementNamed('/login'); // Navigate to the login screen
-          },
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen())),
           icon: CircleAvatar(foregroundImage: NetworkImage(currentUser.profileImageUrl)),
         ),
       ],

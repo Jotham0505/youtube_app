@@ -47,12 +47,14 @@ class _SignupPageState extends State<SignupPage> {
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-        child: Column(
-          children: [
-            headertext(),
-            RegisterForm(),
-            LoginAccountLink(),
-          ],
+        child: Expanded(
+          child: Column(
+            children: [
+              headertext(),
+              RegisterForm(),
+              LoginAccountLink(),
+            ],
+          ),
         ),
       ),
     );
@@ -65,9 +67,6 @@ class _SignupPageState extends State<SignupPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 20,
-          ),
           Center(
             child: Text(
               "Let's get going!",
@@ -87,7 +86,7 @@ class _SignupPageState extends State<SignupPage> {
 
   Widget RegisterForm() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.60,
+      height: MediaQuery.of(context).size.height * 0.55,
       margin: EdgeInsets.symmetric(
         vertical: MediaQuery.of(context).size.height * 0.05,
       ),
@@ -100,7 +99,7 @@ class _SignupPageState extends State<SignupPage> {
           children: [
             PrflPicSelectionField(),
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             CustomFormField(
               hintText: 'Enter your Name',
@@ -119,6 +118,7 @@ class _SignupPageState extends State<SignupPage> {
               },
             ),
             CustomFormField(
+              obscureText: true,
               hintText: 'Enter your Password',
               height: MediaQuery.of(context).size.height * 0.1,
               validationRegEx: PASSWORD_VALIDATION_REGEX,
@@ -155,6 +155,7 @@ class _SignupPageState extends State<SignupPage> {
   Widget RegisterButton() {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
+      height: 45,
       child: TextButton(
         style: TextButton.styleFrom(
           backgroundColor: const Color.fromARGB(255, 255, 0, 0),

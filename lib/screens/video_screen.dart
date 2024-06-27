@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:miniplayer/miniplayer.dart';
+import 'package:video_player/video_player.dart';
 import 'package:youtube_clone_app/screens/Navigation_screen.dart';
 import 'package:youtube_clone_app/values.dart';
 import 'package:youtube_clone_app/widgets/Video_card.dart';
 import 'package:youtube_clone_app/widgets/video_info.dart';
-import 'package:video_player/video_player.dart';
 
 class VideoScreen extends StatefulWidget {
   const VideoScreen({Key? key}) : super(key: key);
@@ -42,8 +42,9 @@ class _VideoScreenState extends State<VideoScreen> {
     return GestureDetector(
       onTap: _togglePlayPause,
       child: Scaffold(
+        backgroundColor: Colors.black,
         body: Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
+          color: Colors.black,
           child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
@@ -70,6 +71,7 @@ class _VideoScreenState extends State<VideoScreen> {
                                 },
                                 icon: Icon(Icons.keyboard_arrow_down),
                                 iconSize: 30,
+                                color: Colors.grey,
                               ),
                             ],
                           ),
@@ -240,31 +242,38 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                   ),
                 ),
               ),
+              
               Positioned(
-                top: 16.0,
-                right: 16.0,
+                top: 60.0,
+                right: 85,
                 child: Row(
                   children: [
-                    if (!_isPlaying) // Show only if not playing
-                      IconButton(
-                        icon: Icon(
-                          Icons.play_arrow,
-                          size: 32.0,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          _togglePlayPause();
-                        },
+                    Visibility(
+                      visible: !_isPlaying,
+                      child: IconButton(
+                        icon: Icon(Icons.replay_10),
+                        color: Colors.grey,
+                        onPressed: _rewind10Seconds,
                       ),
-                    IconButton(
-                      icon: Icon(
-                        _isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
-                        size: 32.0,
-                        color: Colors.white,
+                    ),
+                    Visibility(
+                visible: !_isPlaying,
+                child: Center(
+                  child: IconButton(
+                    icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
+                    color: Colors.grey,
+                    iconSize: 64,
+                    onPressed: _togglePlayPause,
+                  ),
+                ),
+              ),
+                    Visibility(
+                      visible: !_isPlaying,
+                      child: IconButton(
+                        icon: Icon(Icons.forward_10),
+                        color: Colors.grey,
+                        onPressed: _forward10Seconds,
                       ),
-                      onPressed: () {
-                        _toggleFullScreen();
-                      },
                     ),
                   ],
                 ),
@@ -275,7 +284,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                 child: Text(
                   _timeStamp,
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.grey,
                     fontSize: 16.0,
                   ),
                 ),
@@ -319,9 +328,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
     // Implement your logic to enter fullscreen mode here
     // For example, you can use Navigator.push to navigate to a fullscreen page
-    // or change the orientation of the device, etc.
-    // Ensure to handle hiding UI elements like app bar, system UI, etc.
-    // Note: This example focuses on UI control and does not handle platform-specific fullscreen APIs.
+    // or set preferred device orientation, etc.
   }
 
   void _exitFullScreen() {
@@ -330,7 +337,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     });
 
     if (Theme.of(context).platform == TargetPlatform.android) {
-      // For Android, clear fullscreen flags using flutter_windowmanager
+      // For Android, remove fullscreen flags
       FlutterWindowManager.clearFlags(FlutterWindowManager.FLAG_FULLSCREEN);
     } else if (Theme.of(context).platform == TargetPlatform.iOS) {
       // For iOS, set SystemChrome back to default mode
@@ -377,6 +384,16 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     _seekToDragValue();
   }
 
+  void _rewind10Seconds() {
+    final newPosition = _controller.value.position - Duration(seconds: 10);
+    _controller.seekTo(newPosition);
+  }
+
+  void _forward10Seconds() {
+    final newPosition = _controller.value.position + Duration(seconds: 10);
+    _controller.seekTo(newPosition);
+  }
+
   String _formatDuration(Duration duration) {
     return duration.toString().split('.').first.padLeft(8, "0");
   }
@@ -387,7 +404,3 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     super.dispose();
   }
 }
-
-
-
-

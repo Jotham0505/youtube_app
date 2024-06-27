@@ -46,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final screens = [
     Scaffold(
+      backgroundColor: Colors.black,
       body: CustomScrollView(
         slivers: [
           MainHomePageAppbar(), // main app bar

@@ -1,91 +1,95 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:youtube_clone_app/authentication/consts.dart';
 import 'package:youtube_clone_app/authentication/screens/login_page.dart';
-import 'package:youtube_clone_app/authentication/services/video_service.dart';
+import 'package:youtube_clone_app/screens/home_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final VideoService _videoService = GetIt.instance.get<VideoService>();
-  ProfileScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Profile'),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.black,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Color.fromARGB(255, 255, 0, 0)),
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(),)),
+        ),
         actions: [
-          Drawer(
-
-          )
+          IconButton(
+          icon: Icon(Icons.more_vert, color: Color.fromARGB(255, 255, 0, 0)),
+          onPressed: () {},
+        ),
         ],
       ),
       body: Container(
         color: Colors.black,
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20),
-            Center(
-              child: CircleAvatar(
-                radius: 80,
-                backgroundImage: NetworkImage(
-                  PLACEHOLDER_PFP, // Placeholder image URL
+            CircleAvatar(
+              radius: 50,
+              backgroundImage: NetworkImage(PLACEHOLDER_PFP),
+            ),
+            SizedBox(height: 16),
+            Text(
+              'David Robinson',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(height: 32),
+            ListTile(
+              leading: Icon(Icons.person, color: const Color.fromARGB(255, 255, 0, 0)),
+              title: Text('Email', style: TextStyle(color: Colors.white)),
+              trailing: Icon(Icons.arrow_forward_ios, color: Color.fromARGB(255, 255, 0, 0)),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.security, color: Color.fromARGB(255, 255, 0, 0)),
+              title: Text('Security', style: TextStyle(color: Colors.white)),
+              trailing: Icon(Icons.arrow_forward_ios, color: Color.fromARGB(255, 255, 0, 0)),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.dark_mode, color: Color.fromARGB(255, 255, 0, 0)),
+              title: Text('Dark Mode', style: TextStyle(color: Colors.white)),
+              trailing: Icon(Icons.arrow_forward_ios, color: Color.fromARGB(255, 255, 0, 0)),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.notifications, color: Color.fromARGB(255, 255, 0, 0)),
+              title: Text('Notifications', style: TextStyle(color: Colors.white)),
+              trailing: Icon(Icons.arrow_forward_ios, color: Color.fromARGB(255, 255, 0, 0)),
+              onTap: () {},
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage())),
+              style: ElevatedButton.styleFrom(
+                primary: Color.fromARGB(255, 255, 0, 0),
+                padding: EdgeInsets.symmetric(horizontal: 60, vertical: 18),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
                 ),
               ),
-            ),
-            SizedBox(height: 20),
-            ListTile(
-              title: Text(
-                'Name',
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
-              subtitle: Text(
-                'John Doe',
-                style: TextStyle(color: Colors.grey),
-              ),
-              leading: Icon(Icons.person, color: Colors.white),
-            ),
-            Divider(color: Colors.white),
-            ListTile(
-              title: Text(
-                'Email',
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
-              subtitle: Text(
-                'johndoe@example.com',
-                style: TextStyle(color: Colors.grey),
-              ),
-              leading: Icon(Icons.email, color: Colors.white),
-            ),
-            Divider(color: Colors.white),
-            ListTile(
-              title: Text(
-                'Phone',
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
-              subtitle: Text(
-                '+91 123 456 7890',
-                style: TextStyle(color: Colors.grey),
-              ),
-              leading: Icon(Icons.phone, color: Colors.white),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async{
-                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage(),));
-              },
-              child: Text('Log out'),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.red
+              child: Text(
+                'Sign Out',
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ],
         ),
-      )
+      ),
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: ProfileScreen(),
+  ));
 }
