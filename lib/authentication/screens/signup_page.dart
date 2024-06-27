@@ -171,7 +171,7 @@ class _SignupPageState extends State<SignupPage> {
               _navigationService.goBack();
             } else {
               // Show error message
-              showDialog(context: context, 
+              /*showDialog(context: context, 
               builder: (context) => AlertDialog(
                 title: Text('Error'),
                 content: Text('Unable to create account. Please try again later'),
@@ -179,7 +179,7 @@ class _SignupPageState extends State<SignupPage> {
                   TextButton(onPressed: () => Navigator.of(context).pop() , child: Text('Ok') )
                 ],
               )
-            );
+            );*/
               print('Unable to create');
             }
           } else {

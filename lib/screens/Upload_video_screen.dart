@@ -51,37 +51,46 @@ class _UploadScreenState extends State<UploadScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
+        leading: IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back)),
         title: Text('Upload Video'),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.black,
       ),
-      body: Container(
-        color: Colors.black,
-        padding: EdgeInsets.all(20),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
             Center(
-              child: Container(
-                decoration: BoxDecoration(
-
-                ),
-                child: ElevatedButton( // used to pick the video from the gallery
-                  onPressed: _pickAndUploadVideo,
-                  child: Text('Pick Video'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: const Color.fromARGB(255, 255, 0, 0),
+                  padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 60.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
+                ),
+                
+                onPressed: _pickAndUploadVideo,
+                child: Column(
+                  children: [
+                    Icon(Icons.video_library, size: 50, color: Colors.white),
+                    SizedBox(height: 10),
+                    Text(
+                      'Videos',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Upload new videos.',
+                      style: TextStyle(color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            _videoUrl != null && _controller != null
-                ? AspectRatio(
-                    aspectRatio: _controller!.value.aspectRatio,
-                    child: VideoPlayer(_controller!),
-                  )
-                : Container(),
           ],
         ),
       ),
